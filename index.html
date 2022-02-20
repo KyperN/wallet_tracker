@@ -26,15 +26,15 @@
                 <form id="expForm">
                     <div class="token-input name">
                         <span for="name">Name:</span>
-                        <input type="text" id="name">
+                        <input type="text" id="name" placeholder='BTC'>
                     </div>
                     <div class="token-input enter-price">
                         <span for="amount">Enter price:</span>
-                        <input type="text" id="enter">
+                        <input type="text" id="enter" placeholder='USD'>
                     </div>
                     <div class="token-input amount">
                         <span for="amount">Amount:</span>
-                        <input type="text" id="amount" placeholder="usd">
+                        <input type="text" id="amount" placeholder="USD">
                     </div>
                     <button type="submit" class="buttonSave">Add record</button>
                 </form>
@@ -42,7 +42,11 @@
         </section>
         <section class="content">
             <div class="transaction-container">
-                
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border loader" role="status">
+                      <span class="visually-hidden"></span>
+                    </div>
+                  </div>
                 <h2 class='trans'>Transaction History</h2>
                 <ul class='items'>
                     <li class='item'>

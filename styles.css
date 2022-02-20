@@ -51,7 +51,15 @@ body{
 }
 
 
-
+.green {
+    color:green;
+}
+.orange {
+    color:orange;
+}
+.red {
+    color:red;
+}
 
 input, select{
     width: 130px;
@@ -87,3 +95,8 @@ a{
     text-decoration: underline;
     cursor: pointer;
 }
+.loader {
+    color:white;
+    visibility: hidden;
+}
+.active {}
