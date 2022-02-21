@@ -4,29 +4,35 @@
 }
 
 body{
-    background:#042159;
-    color:#77D9AB;
+    background:wheat;
+    
 }
 
 .title{
     width: 500px;
-    color:#0869A6;
+    color:#2b262d;
     margin:3% auto;
 }
-
+.trans {
+    margin-bottom: 35px;
+    text-align:center;
+    margin-left: 25px;
+}
 .content{
     width: 580px;
     margin: 0 auto;
-    background-color:#0869A6;
+    background-color:#e09050;
     padding: 3%;
     padding-left: 6%;
     display: flex;
-    justify-content:
+    border-radius: 5px;
+    box-shadow: 12px 0px 5px 0px rgba(34, 60, 80, 0.2);
 }
 .item {
     display: flex;
     justify-content: space-between;
     margin-left: 25px;
+    margin-top:15px;
 }
 .trans {
     text-align: center;
@@ -41,7 +47,7 @@ body{
 .form{
     padding-top:15px;
     display:flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
 }
@@ -50,9 +56,11 @@ body{
     padding: 5px 0px;
 }
 
-
+.sell-info{
+    margin-left:30px;
+}
 .green {
-    color:green;
+    color:#04BF8A
 }
 .orange {
     color:orange;
@@ -90,6 +98,9 @@ button{
     margin: 14px 25%;
     cursor: pointer;
 }
+li {
+    list-style-type: none;
+}
 
 a{
     text-decoration: underline;
@@ -98,5 +109,29 @@ a{
 .loader {
     color:white;
     visibility: hidden;
+    color:black
 }
-.active {}
+.coin-name {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.buy-price {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.cur-price {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.result-amount {
+    font-size: 20px;
+    font-weight: 600;
+}
+.token-amount {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}

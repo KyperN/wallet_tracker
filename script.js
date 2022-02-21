@@ -2,59 +2,90 @@
 // SELECTORS AND VARS
 const addBtn = document.querySelector('.buttonSave')
 const tokenName = document.querySelector('#name')
-const tokenEnterPrice = document.querySelector('#enter')
+const tokenBuyPrice = document.querySelector('#enter')
 const tokenEnterAmount = document.querySelector('#amount')
+const tokenAmount = document.querySelector('.token-amount')
+console.log(tokenAmount)
+console.log(tokenBuyPrice, tokenEnterAmount)
 
 // FUNCTIONS
-function profitOrLoss (buyPrice, curPrice) {
-  console.log(+curPrice - +buyPrice)
+function checkNameInput (input) {
+  const letters = /^[A-Za-z]+$/
+  if (!input.value.match(letters)) {
+    alert('Please enter only letters')
+    input.value = ''
+  }
+};
+//ЧТО БЫ ПОЛУЧИТЬ СТОИМОСТЬ ТВОИХ ТОКЕНОВ НУЖНО НА СКОЛЬКО ТЫ КУПИЛ РАЗДЕЛИТЬ НА ЦЕНУ ПОКУПКИ ПОЛУЧИТЬ ТОКЕНЫ И УМНОЖИТЬ НА НАНЕШНЮЮ ЦЕНУ
+function profitOrLossText (buyPrice, curPrice) {
+  switch (true) {
+    case +curPrice - +buyPrice > 0:
+      return 'You gained:'
+    case +curPrice - +buyPrice < 0:
+      return 'Your loss:'
+  }
+};
+
+function profitOrLossStyle (buyPrice, curPrice) {
   switch (true) {
     case +curPrice - +buyPrice > 0:
       return 'green'
     case +curPrice - +buyPrice < 0:
       return 'red'
   }
-}
+};
+
+function calculateTokens (buyPrice, enterPrice) {
+  console.log(buyPrice, enterPrice)
+  return (+enterPrice / +buyPrice).toFixed(3)
+};
 
 function removeSpinner (selector) {
-  document.querySelector(selector).style.visibility = 'hidden';
-}
+  document.querySelector(selector).style.visibility = 'hidden'
+};
 function addSpinner (selector) {
-  document.querySelector(selector).style.visibility = 'visible';
-}
+  document.querySelector(selector).style.visibility = 'visible'
+};
 
-function render (coin, buyPrice, curPrice) {
+function render (coin, buyPrice, enterPrice, curPrice) {
   const newElem = document.createElement('li')
   const itemsBlock = document.querySelector('.items')
   newElem.innerHTML = `<li class='item'>
-    <div class="buy-info">
-        Coin Name 
-    <div class="coin-name">
-        <p>${coin.toUpperCase()}</p>
-    </div>
-    <div>
-        <p>Bought at:</p>
-        <span class="buy-price">${parseInt(buyPrice)}</span>
-        
-        <button>x</button>
-    </div>
-    </div>
-    <div class="sell-info">
-        <div class="profit">
-            <div class="cur-price">
-                current price:
-                <p>${parseInt(curPrice)}</p>
-            </div>
-            <div class="result ${profitOrLoss(buyPrice, curPrice)}">
-                Your result:
-                ${parseInt(curPrice) - parseInt(buyPrice)}
-            </div>
-        </div>
-    </div>
+  <div class="buy-info">
+      <div>
+          <span>Coin name:</span>
+  <span class='coin-name'>${coin.toUpperCase()}</span>
+      </div>
+      
+  <div>
+      <span>Bought at:</span>
+      <span class="buy-price">${parseInt(buyPrice)}</span>
+  </div>
+  <div>
+  <span>Worth then:</span>
+<span class='coin-name'>${buyPrice}</span>
+</div>
+  </div>
+  <div class="sell-info">
+      <div class="profit">
+          <div>
+              <span>Worth now:</span>
+              <span class="cur-price">${parseInt(curPrice)}</span>
+          </div>
+          <div>
+              Token amount: <span class='token-amount'>${calculateTokens(buyPrice, enterPrice)}</span>
+          </div>
+          <div class="result">
+              ${profitOrLossText(buyPrice, curPrice)}
+              <span class="result-amount ${profitOrLossStyle(buyPrice, curPrice)}">${parseInt(curPrice) - parseInt(buyPrice)}</span>
+          </div>
+      </div>
+  </div>
 </li>`
   itemsBlock.appendChild(newElem)
   removeSpinner('.loader')
-}
+};
+
 async function getData (url) {
   const resp = await fetch(url, {
     headers: {
@@ -62,18 +93,21 @@ async function getData (url) {
     }
   })
   const respData = await resp.json()
+  console.log(respData.data.market_data.price_usd)
   return respData.data.market_data.price_usd
-}
-// DOM OPS
+};
 
+// DOM OPS
+tokenName.addEventListener('input', () => {
+  checkNameInput(tokenName)
+})
 addBtn.addEventListener('click', (e) => {
   addSpinner('.loader')
+  checkNameInput(tokenName)
   e.preventDefault()
-  // addSpinner('.loader')
-  getData(`https://data.messari.io/api/v1/assets/${tokenName.value}/metrics`).then(price => {
-    render(tokenName.value, tokenEnterPrice.value, Math.round(price))
+  getData(`https://data.messari.io/api/v1/assets/${tokenName.value.toLowerCase()}/metrics`).then(price => {
+    render(tokenName.value, tokenBuyPrice.value, tokenEnterAmount.value, Math.round(price))
+  }).catch(error => {
+    console.log(error)
   })
-
-  //
-  // render(tokenName.value, tokenEnterAmount.value, getData(`https://data.messari.io/api/v1/assets/${tokenName.value}/metrics`))
 })
