@@ -5,8 +5,8 @@ const tokenName = document.querySelector('#name')
 const tokenBuyPrice = document.querySelector('#enter')
 const tokenEnterAmount = document.querySelector('#amount')
 const tokenAmount = document.querySelector('.token-amount')
-console.log(tokenAmount)
-console.log(tokenBuyPrice, tokenEnterAmount)
+const curPrice = document.querySelector('.cur-price')
+const arrData = []
 
 // FUNCTIONS
 function checkNameInput (input) {
@@ -16,7 +16,16 @@ function checkNameInput (input) {
     input.value = ''
   }
 };
-//ЧТО БЫ ПОЛУЧИТЬ СТОИМОСТЬ ТВОИХ ТОКЕНОВ НУЖНО НА СКОЛЬКО ТЫ КУПИЛ РАЗДЕЛИТЬ НА ЦЕНУ ПОКУПКИ ПОЛУЧИТЬ ТОКЕНЫ И УМНОЖИТЬ НА НАНЕШНЮЮ ЦЕНУ
+
+function saveData (coin, buyPrice, enterPrice, curPrice) {
+  arrData.push(enteredData)
+  localStorage.setItem('record', JSON.stringify(enteredData))
+}
+
+function countCurrentValue (tokenAmount, curPrice) {
+  return (tokenAmount * curPrice).toFixed(2)
+}
+
 function profitOrLossText (buyPrice, curPrice) {
   switch (true) {
     case +curPrice - +buyPrice > 0:
@@ -36,10 +45,8 @@ function profitOrLossStyle (buyPrice, curPrice) {
 };
 
 function calculateTokens (buyPrice, enterPrice) {
-  console.log(buyPrice, enterPrice)
   return (+enterPrice / +buyPrice).toFixed(3)
 };
-
 function removeSpinner (selector) {
   document.querySelector(selector).style.visibility = 'hidden'
 };
@@ -62,28 +69,30 @@ function render (coin, buyPrice, enterPrice, curPrice) {
       <span class="buy-price">${parseInt(buyPrice)}</span>
   </div>
   <div>
-  <span>Worth then:</span>
-<span class='coin-name'>${buyPrice}</span>
+  <span>Invested:</span>
+<span class='coin-name'>${enterPrice}</span>
 </div>
   </div>
   <div class="sell-info">
       <div class="profit">
           <div>
               <span>Worth now:</span>
-              <span class="cur-price">${parseInt(curPrice)}</span>
+              <span class="cur-price">${countCurrentValue(calculateTokens(buyPrice, enterPrice), curPrice)}</span>
           </div>
           <div>
               Token amount: <span class='token-amount'>${calculateTokens(buyPrice, enterPrice)}</span>
           </div>
           <div class="result">
               ${profitOrLossText(buyPrice, curPrice)}
-              <span class="result-amount ${profitOrLossStyle(buyPrice, curPrice)}">${parseInt(curPrice) - parseInt(buyPrice)}</span>
+              <span class="result-amount ${profitOrLossStyle(buyPrice, curPrice)}">${(countCurrentValue(calculateTokens(buyPrice, enterPrice), curPrice) - enterPrice).toFixed(2)}</span>
           </div>
       </div>
   </div>
 </li>`
   itemsBlock.appendChild(newElem)
   removeSpinner('.loader')
+  const record = localStorage.getItem('record')
+  console.log(record)
 };
 
 async function getData (url) {
@@ -93,7 +102,6 @@ async function getData (url) {
     }
   })
   const respData = await resp.json()
-  console.log(respData.data.market_data.price_usd)
   return respData.data.market_data.price_usd
 };
 
@@ -106,8 +114,15 @@ addBtn.addEventListener('click', (e) => {
   checkNameInput(tokenName)
   e.preventDefault()
   getData(`https://data.messari.io/api/v1/assets/${tokenName.value.toLowerCase()}/metrics`).then(price => {
+    const enteredData = {
+      buyingPrice: buyPrice,
+      currentPrice: curPrice,
+      invested: enterPrice,
+      curPrice: Math.round(price)
+    }
+    saveData(enteredData)
     render(tokenName.value, tokenBuyPrice.value, tokenEnterAmount.value, Math.round(price))
   }).catch(error => {
-    console.log(error)
+
   })
 })
