@@ -1,5 +1,5 @@
-
-// SELECTORS AND VARS
+document.addEventListener("DOMContentLoaded",()=>{
+  // SELECTORS AND VARS
 const addBtn = document.querySelector('.buttonSave')
 const tokenName = document.querySelector('#name')
 const tokenBuyPrice = document.querySelector('#enter')
@@ -17,9 +17,9 @@ function checkNameInput (input) {
   }
 };
 
-function saveData (coin, buyPrice, enterPrice, curPrice) {
-  arrData.push(enteredData)
-  localStorage.setItem('record', JSON.stringify(enteredData))
+
+function saveData (data) {
+  arrData.push(data)
 }
 
 function countCurrentValue (tokenAmount, curPrice) {
@@ -86,14 +86,39 @@ function render (coin, buyPrice, enterPrice, curPrice) {
               ${profitOrLossText(buyPrice, curPrice)}
               <span class="result-amount ${profitOrLossStyle(buyPrice, curPrice)}">${(countCurrentValue(calculateTokens(buyPrice, enterPrice), curPrice) - enterPrice).toFixed(2)}</span>
           </div>
+          <div class='refresh'>
+          <button class='refresh-btn'>refresh</button>
+          </div>
       </div>
   </div>
 </li>`
   itemsBlock.appendChild(newElem)
   removeSpinner('.loader')
-  const record = localStorage.getItem('record')
-  console.log(record)
+  const refreshBtn = document.querySelectorAll('.refresh');
+  refreshBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+    const coinName = document.querySelector('.item .coin-name');
+      console.log(coinName);
+    })
+  })
+  const record = {
+    coinName: coin,
+    buyingPrice: buyPrice,
+    invested: enterPrice,
+    curPrice: Math.round(curPrice)
+  }
+  arrData.push(record)
+  localStorage.setItem('records', JSON.stringify(arrData))
 };
+
+if(localStorage.getItem('records') != null) {
+  const data = JSON.parse(localStorage.getItem('records'))
+  data.forEach((record) => {
+    render(record.coinName, record.buyingPrice, record.invested, record.curPrice);
+  })
+  
+
+}
 
 async function getData (url) {
   const resp = await fetch(url, {
@@ -114,15 +139,10 @@ addBtn.addEventListener('click', (e) => {
   checkNameInput(tokenName)
   e.preventDefault()
   getData(`https://data.messari.io/api/v1/assets/${tokenName.value.toLowerCase()}/metrics`).then(price => {
-    const enteredData = {
-      buyingPrice: buyPrice,
-      currentPrice: curPrice,
-      invested: enterPrice,
-      curPrice: Math.round(price)
-    }
-    saveData(enteredData)
     render(tokenName.value, tokenBuyPrice.value, tokenEnterAmount.value, Math.round(price))
   }).catch(error => {
 
   })
+})
+
 })

@@ -135,3 +135,15 @@ a{
     font-weight: 600;
     color:white;
 }
+
+.refresh-btn {
+    width: 70px;
+    color:#fff; 
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 10px;
+    background-color: #04BF8A;
+    border-radius: 5px;
+    cursor: pointer;
+}
