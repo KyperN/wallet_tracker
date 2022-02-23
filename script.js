@@ -93,8 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
       invested: enterPrice,
       curPrice: Math.round(curPrice)
     }
-    arrData.push(record)
-    localStorage.setItem('records', JSON.stringify(arrData))
+    if (localStorage.getItem('records') == null) {
+      arrData.push(record)
+      localStorage.setItem('records', JSON.stringify(arrData))
+    }
+    else{
+      console.log('full')
+    }
   };
 
   if (localStorage.getItem('records') != null) {
@@ -129,11 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
   refreshBtn.addEventListener('click', () => {
+    const allRecords = document.querySelectorAll('.item');
+    allRecords.forEach(record => {
+      record.remove();
+    })
+    addSpinner('.loader')
     const records = JSON.parse(localStorage.getItem('records'))
-    console.log(records)
     records.forEach(record => {
       const { coinName, buyingPrice, invested } = record
-      getData(`https://data.messari.io/api/v1/assets/${record.coinName}/metrics`).then(price => {
+      getData(`https://data.messari.io/api/v1/assets/${coinName}/metrics`).then(price => {
         render(coinName, buyingPrice, invested, Math.round(price))
       })
     })
