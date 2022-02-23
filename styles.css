@@ -1,0 +1,149 @@
+*{
+    margin:0;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+body{
+    background:wheat;
+    
+}
+
+.title{
+    width: 500px;
+    color:#2b262d;
+    margin:3% auto;
+}
+.trans {
+    margin-bottom: 35px;
+    text-align:center;
+    margin-left: 25px;
+}
+.content{
+    width: 580px;
+    margin: 0 auto;
+    background-color:#e09050;
+    padding: 3%;
+    padding-left: 6%;
+    display: flex;
+    border-radius: 5px;
+    box-shadow: 12px 0px 5px 0px rgba(34, 60, 80, 0.2);
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 25px;
+    margin-top:15px;
+}
+.trans {
+    text-align: center;
+    padding-left:65px;
+}
+.secondTitle{
+    text-align:left;
+    margin: 2% 0;
+    font-weight: 100;
+}
+
+.form{
+    padding-top:15px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.token-input{
+    padding: 5px 0px;
+}
+
+.sell-info{
+    margin-left:30px;
+}
+.green {
+    color:#04BF8A
+}
+.orange {
+    color:orange;
+}
+.red {
+    color:red;
+}
+
+input, select{
+    width: 130px;
+    margin-left: 10px;
+}
+
+/* table style */
+table{
+    width: 100%;
+}
+
+thead{
+    background-color:#042159;
+    line-height: 30px;
+}
+
+/* Button */
+
+button{
+    width: 200px;
+    color:#fff; 
+    padding: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 20px;
+    background-color: #04BF8A;
+    border-radius: 5px;
+    margin: 14px 25%;
+    cursor: pointer;
+}
+li {
+    list-style-type: none;
+}
+
+a{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.loader {
+    color:white;
+    visibility: hidden;
+    color:black
+}
+.coin-name {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.buy-price {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.cur-price {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+.result-amount {
+    font-size: 20px;
+    font-weight: 600;
+}
+.token-amount {
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+}
+
+.refresh-btn {
+    width: 70px;
+    color:#fff; 
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 10px;
+    background-color: #04BF8A;
+    border-radius: 5px;
+    cursor: pointer;
+}
