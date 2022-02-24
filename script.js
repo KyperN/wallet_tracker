@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tokenEnterAmount = document.querySelector('#amount')
   const tokenAmount = document.querySelector('.token-amount')
   const curPrice = document.querySelector('.cur-price')
-  const arrData = []
+  let arrData = []
   const refreshBtn = document.querySelector('.refresh button')
 
   // FUNCTIONS
@@ -87,19 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </li>`
     itemsBlock.appendChild(newElem)
     removeSpinner('.loader')
-    const record = {
-      coinName: coin,
-      buyingPrice: buyPrice,
-      invested: enterPrice,
-      curPrice: Math.round(curPrice)
-    }
-    if (localStorage.getItem('records') == null) {
-      arrData.push(record)
-      localStorage.setItem('records', JSON.stringify(arrData))
-    }
-    else{
-      console.log('full')
-    }
   };
 
   if (localStorage.getItem('records') != null) {
@@ -129,21 +116,37 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
     getData(`https://data.messari.io/api/v1/assets/${tokenName.value.toLowerCase()}/metrics`).then(price => {
       render(tokenName.value, tokenBuyPrice.value, tokenEnterAmount.value, Math.round(price))
+      const record = {
+        coinName: tokenName.value,
+        buyingPrice: tokenBuyPrice.value,
+        invested: tokenEnterAmount.value,
+        curPrice: Math.round(price)
+      }
+      arrData.push(record)
+      localStorage.setItem('records', JSON.stringify(arrData))
     }).catch(error => {
-
     })
   })
   refreshBtn.addEventListener('click', () => {
-    const allRecords = document.querySelectorAll('.item');
+    const allRecords = document.querySelectorAll('.item')
     allRecords.forEach(record => {
-      record.remove();
+      record.remove()
     })
-    addSpinner('.loader')
     const records = JSON.parse(localStorage.getItem('records'))
+    localStorage.removeItem('records')
     records.forEach(record => {
       const { coinName, buyingPrice, invested } = record
       getData(`https://data.messari.io/api/v1/assets/${coinName}/metrics`).then(price => {
         render(coinName, buyingPrice, invested, Math.round(price))
+        localStorage.setItem('records', arrData=[])
+        const record = {
+          coinName: tokenName.value,
+          buyingPrice: tokenBuyPrice.value,
+          invested: tokenEnterAmount.value,
+          curPrice: Math.round(price)
+        }
+        arrData.push(record)
+        localStorage.setItem('records', JSON.stringify(arrData))
       })
     })
   })
