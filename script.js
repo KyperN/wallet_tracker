@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recordsData.forEach(async (record, index) => {
             const {coinName} = record
             const price = await getMetrics(coinName);
-            recordsData[index].price = price;
+            recordsData[index].curPrice = price;
             render(recordsData);
             localStorage.setItem('records', JSON.stringify(recordsData));
             removeSpinner('.loader');
